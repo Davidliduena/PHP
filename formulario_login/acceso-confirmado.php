@@ -16,7 +16,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-warning" role="alert">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia nobis est quod necessitatibus excepturi deserunt tempora odit beatae, possimus error in quidem dolore provident impedit praesentium perspiciatis corrupti sequi architecto!
                 </div>
             </div>
