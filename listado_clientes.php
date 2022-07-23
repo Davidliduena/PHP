@@ -4,36 +4,39 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start(); //Indica que utilizaremos variables de session
+session_start();
 
-if(!isset($_SESSION["listadoClientes"])){
-    $_SESSION["listadoClientes"] = array();
+if(isset($_SESSION["listadoClientes"])){
+    //Si existe la variable de session listadoClientes asigno su contenido a aClientes
+    $aClientes = $_SESSION["listadoClientes"];
+} else {
+    $aClientes = array();
 }
 
 if($_POST){
-
-    if(isset($_POST["btnEnviar"])){
-
+    //Si hace click en Enviar entonces:
+    //Asignamos en variables los datos que vienen del formulario
     $nombre = $_POST["txtNombre"];
     $dni = $_POST["txtDni"];
     $telefono = $_POST["txtTelefono"];
     $edad = $_POST["txtEdad"];
 
+    //Creamos un array que contendrá el listado de clientes
+    $aClientes[] = array("nombre" => $nombre, 
+                        "dni" => $dni,
+                        "telefono" => $telefono,
+                        "edad" => $edad
+    );
+    //Actualiza el contenido de variable de session
+    $_SESSION["listadoClientes"] = $aClientes;
 
-    $cliente = array("nombre" => $nombre, 
-                    "dni" => $dni,
-                    "telefono" => $telefono,
-                    "edad" => $edad);
+    //Si hace click en Eliminar:
+    //session_destroy();
 
+    //Agregar para eliminar una fila
 
-    $_SESSION["listadoClientes"][] = $cliente;
-    } else if(isset($_POST["btnEliminar"])){
-        session_destroy();
-        header("Location: clientes_session1.php");
-    }
 
 }
-//unset($_SESSION["listadoClientes"][1]);
 
 ?>
 <!DOCTYPE html>
@@ -83,17 +86,15 @@ if($_POST){
                         <th>Edad:</th>
                     </thead>
                     <tbody>
-                        <?php
-                        foreach($_SESSION["listadoClientes"] as $cliente): 
-                        ?>
-                        <tr>
-                            <td><?php echo $cliente["nombre"]; ?></td>
-                            <td><?php echo $cliente["dni"]; ?></td>
-                            <td><?php echo $cliente["telefono"]; ?></td>
-                            <td><?php echo $cliente["edad"]; ?></td>
-                       
-                        </tr>
-                        <?php endforeach; ?>                 
+                        <?php foreach ($aClientes as $cliente): ?>
+                            <tr>
+                                <td><?php echo $cliente["nombre"]; ?></td>
+                                <td><?php echo $cliente["dni"]; ?></td>
+                                <td><?php echo $cliente["telefono"]; ?></td>
+                                <td><?php echo $cliente["edad"]; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+
                     </tbody>
                 </table>
             </div>
