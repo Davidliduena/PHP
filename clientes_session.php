@@ -13,8 +13,7 @@ if(isset($_SESSION["listadoClientes"])){
     $aClientes = array();
 }
 
-if($_POST){
-    //Si hace click en Enviar entonces:
+if(isset($_POST["btnEnviar"])){
     //Asignamos en variables los datos que vienen del formulario
     $nombre = $_POST["txtNombre"];
     $dni = $_POST["txtDni"];
@@ -29,13 +28,18 @@ if($_POST){
     );
     //Actualiza el contenido de variable de session
     $_SESSION["listadoClientes"] = $aClientes;
-
+}
     //Si hace click en Eliminar:
-    //session_destroy();
-
-    //Agregar para eliminar una fila
-
-
+if(isset($_POST["btnEliminar"])){
+    session_destroy();
+    $aClientesn = array();
+}
+if(isset($_GET["pos"])){
+    $pos = $_GET["pos"];
+    unset($aClientes[$pos]);
+    //Actualizo l avariable de session con el array actualizado
+    $_SESSION["listadoClientes"] = $aClientes;
+    header("Location: clientes_session.php");
 }
 
 ?>
@@ -49,6 +53,7 @@ if($_POST){
     <title>Listado de clientes</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -84,14 +89,18 @@ if($_POST){
                         <th>DNI:</th>
                         <th>Telefono:</th>
                         <th>Edad:</th>
+                        <th>Acciones:</th>
                     </thead>
                     <tbody>
-                        <?php foreach ($aClientes as $cliente): ?>
+                    <?php foreach ($aClientes as $pos => $cliente): ?>
+
                             <tr>
                                 <td><?php echo $cliente["nombre"]; ?></td>
                                 <td><?php echo $cliente["dni"]; ?></td>
                                 <td><?php echo $cliente["telefono"]; ?></td>
                                 <td><?php echo $cliente["edad"]; ?></td>
+                                <td><a href="clientes_session.php?pos=<?php echo $pos; ?>"><i class="bi bi-trash"></i></a></td>
+
                             </tr>
                         <?php endforeach; ?>
 
